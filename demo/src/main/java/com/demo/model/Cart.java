@@ -1,6 +1,5 @@
 package com.demo.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +18,17 @@ public class Cart {
     @JoinColumn
 	private Product product;
 	private int quanity;
+	@OneToOne
+    @JoinColumn(name="user_id")
+	private User user;
+	
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -39,8 +49,9 @@ public class Cart {
 	}
 	@Override
 	public String toString() {
-		return "Cart [id=" + id + ", product=" + product + ", quanity=" + quanity + "]";
+		return "Cart [id=" + id + ", product=" + product + ", quanity=" + quanity + ", user=" + user + "]";
 	}
+	
 	
 	
 	

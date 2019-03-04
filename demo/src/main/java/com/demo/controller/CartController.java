@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.demo.dao.ProductModel;
 import com.demo.model.Cart;
 import com.demo.model.Item;
 import com.demo.model.Product;
+import com.demo.model.User;
 import com.demo.service.CartService;
 import com.demo.service.ProductService;
 
@@ -37,16 +37,18 @@ public class CartController {
 	}
 
 	@RequestMapping(value="buy/{id}",method=RequestMethod.GET)
-	public String addCart(@PathVariable("id") Integer  id){
+	public String addCart(@PathVariable("id") Integer  id,HttpSession httpSession){
 	 Product product=productService.findById(id);
 	 Optional<Cart> cart=cartService.findByProduct(product.getId());
 	 if(cart.isPresent()){
 		 cart.get().setQuanity(cart.get().getQuanity() + 1);
 		 cartService.saveCart(cart.get());
 	 }else{
+		 User user=(User)httpSession.getAttribute("user");
 		 Cart cart2=new Cart();
 		 cart2.setProduct(product);
 		 cart2.setQuanity(1);
+		 cart2.setUser(user);
 		 cartService.saveCart(cart2);
 	 }
 	 
